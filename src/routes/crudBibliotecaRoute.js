@@ -1,13 +1,25 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const crearCrudRouter = (Modelo, recurso, campoUnico) => {
+const crearCrudRouter = (Modelo, recurso, campoUnico, rutasParaPoblar = []) => {
     const router = express.Router();
+
+    const poblar = (consulta) => rutasParaPoblar.reduce(
+        (resultado, ruta) => resultado.populate(ruta),
+        consulta
+    );
 
     const responderError = (res, error) => {
         if (error.name === 'ValidationError') {
             return res.status(400).json({
                 mensaje: 'Error de validación',
+                detalles: error.message
+            });
+        }
+
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                mensaje: 'El formato de uno de los datos enviados no es válido',
                 detalles: error.message
             });
         }
@@ -48,7 +60,7 @@ const crearCrudRouter = (Modelo, recurso, campoUnico) => {
 
     router.get('/', async (req, res) => {
         try {
-            res.status(200).json(await Modelo.find());
+            res.status(200).json(await poblar(Modelo.find()));
         } catch (error) {
             responderError(res, error);
         }
@@ -58,7 +70,7 @@ const crearCrudRouter = (Modelo, recurso, campoUnico) => {
         if (!validarId(req, res)) return;
 
         try {
-            const registro = await Modelo.findById(req.params.id);
+            const registro = await poblar(Modelo.findById(req.params.id));
             if (!registro) {
                 return res.status(404).json({
                     mensaje: `${recurso} no encontrado`
@@ -74,11 +86,11 @@ const crearCrudRouter = (Modelo, recurso, campoUnico) => {
         if (!validarId(req, res)) return;
 
         try {
-            const registro = await Modelo.findByIdAndUpdate(
+            const registro = await poblar(Modelo.findByIdAndUpdate(
                 req.params.id,
                 req.body,
                 { new: true, runValidators: true }
-            );
+            ));
             if (!registro) {
                 return res.status(404).json({
                     mensaje: `${recurso} no encontrado`
@@ -97,7 +109,7 @@ const crearCrudRouter = (Modelo, recurso, campoUnico) => {
         if (!validarId(req, res)) return;
 
         try {
-            const registro = await Modelo.findByIdAndDelete(req.params.id);
+            const registro = await poblar(Modelo.findByIdAndDelete(req.params.id));
             if (!registro) {
                 return res.status(404).json({
                     mensaje: `${recurso} no encontrado`

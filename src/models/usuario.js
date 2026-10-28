@@ -6,26 +6,40 @@ const usuarioSchema = new mongoose.Schema({
         required: [true, 'El nombre es obligatorio'],
         trim: true
     },
+    comprobante_domicilio: {
+        type: String,
+        trim: true
+    },
+    curp: {
+        type: String,
+        trim: true,
+        uppercase: true
+    },
+    identificacion_oficial: {
+        type: String,
+        trim: true
+    },
     direccion: {
         type: String,
-        required: [true, 'La dirección es obligatoria'],
         trim: true
     },
     telefono: {
         type: String,
-        required: [true, 'El teléfono es obligatorio'],
+        trim: true
+    },
+    celular: {
+        type: String,
         trim: true
     },
     correo: {
         type: String,
-        required: [true, 'El correo es obligatorio'],
         unique: true,
         trim: true
     },
     tipo_miembro: {
         type: String,
-        required: [true, 'El tipo de miembro es obligatorio'],
-        enum: ['afiliado', 'no afiliado']
+        enum: ['afiliado', 'no afiliado'],
+        default: 'afiliado'
     }
 }, { collection: 'Usuario' });
 

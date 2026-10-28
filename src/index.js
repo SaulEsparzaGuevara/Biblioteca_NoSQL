@@ -13,6 +13,8 @@ const bibliotecaRoutes = require('./routes/bibliotecaRoute.js');
 const categoriaRoutes = require('./routes/categoriaRoute.js');
 const libroRoutes = require('./routes/libroRoute.js');
 const usuarioRoutes = require('./routes/usuarioRoute.js');
+const prestamoRoutes = require('./routes/prestamoRoute.js');
+const consultaRoutes = require('./routes/consultaRoute.js');
 
 // routers
 app.use(express.json());
@@ -20,6 +22,8 @@ app.use('/api/bibliotecas', bibliotecaRoutes);
 app.use('/api/categorias', categoriaRoutes);
 app.use('/api/libros', libroRoutes);
 app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/prestamos', prestamoRoutes);
+app.use('/api/consultas', consultaRoutes);
 
 // Routers
 app.get('/', (req, res) => {

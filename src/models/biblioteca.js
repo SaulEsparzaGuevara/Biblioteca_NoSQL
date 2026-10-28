@@ -6,24 +6,45 @@ const bibliotecaSchema = new mongoose.Schema({
         required: [true, 'El nombre de la biblioteca es obligatorio'],
         trim: true
     },
+    bibliografia: {
+        type: String,
+        trim: true
+    },
+    fotografia: {
+        type: String,
+        trim: true
+    },
+    obras: {
+        type: String,
+        trim: true
+    },
+    ubicacion: {
+        type: String,
+        required: [true, 'La ubicación es obligatoria'],
+        trim: true
+    },
+    ubicacion_referencia: {
+        type: String,
+        trim: true
+    },
+    horarios_atencion: {
+        type: String,
+        trim: true
+    },
     direccion: {
         type: String,
-        required: [true, 'La dirección es obligatoria'],
         trim: true
     },
     telefono: {
         type: String,
-        required: [true, 'El teléfono es obligatorio'],
         trim: true
     },
     responsable: {
         type: String,
-        required: [true, 'El responsable es obligatorio'],
         trim: true
     },
     descripcion: {
         type: String,
-        required: [true, 'La descripción es obligatoria'],
         trim: true
     }
 }, { collection: 'Biblioteca' });
